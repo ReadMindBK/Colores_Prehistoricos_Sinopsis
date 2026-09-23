@@ -36,24 +36,25 @@
     }
 
     #play {
-      font-size: 20px;
-      background-color: #007bff;
-      color: white;
+      width: 200px;
+      padding: 12px;
       border: none;
-      padding: 9px 0;
-      width: 100%;
-      max-width: 320px;
-      border-radius: 15px;
+      border-radius: 14px;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
       cursor: pointer;
+      transition: .2s;
     }
 
     .jump {
       display: block;
       width: 100%;
       margin: 0;
-      background: #3b7ddd;
+      background: #4CAF50;
       color: #fff;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -64,9 +65,94 @@
       box-shadow: 0 0 12px rgba(255, 140, 26, 0.8);
     }
 
+    /* =========================================================
+       BARRA DE PROGRESO
+       ========================================================= */
+
     input[type="range"] {
+      width: 80%;
+      display: block;
+      margin: 10px auto 15px auto;
+
+      -webkit-appearance: none;
+      appearance: none;
+
+      /* 
+         La barra se pinta dinámicamente mediante JavaScript.
+         Azul = parte reproducida
+         Gris = parte restante
+      */
+      background: linear-gradient(
+        to right,
+        #4CAF50 0%,
+        #4CAF50 0%,
+        #e0e0e0 0%,
+        #e0e0e0 100%
+      );
+
+      outline: none;
+      border-radius: 4px;
+    }
+
+    /* =========================================================
+       BARRA - CHROME / EDGE / SAFARI
+       ========================================================= */
+
+    input[type="range"]::-webkit-slider-runnable-track {
       width: 100%;
-      margin-top: 10px;
+      height: 6px;
+      background: transparent;
+      border-radius: 4px;
+    }
+
+    /* =========================================================
+       BARRA - FIREFOX
+       ========================================================= */
+
+    input[type="range"]::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      background: transparent;
+      border-radius: 4px;
+    }
+
+    /* =========================================================
+       PUNTO DE LA BARRA - CHROME / EDGE / SAFARI
+       ========================================================= */
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+
+      height: 18px;
+      width: 18px;
+
+      border-radius: 50%;
+
+      /* MISMO AZUL QUE LA PARTE RECORRIDA */
+      background: #4CAF50;
+
+      cursor: pointer;
+
+      margin-top: -6px;
+    }
+
+    /* =========================================================
+       PUNTO DE LA BARRA - FIREFOX
+       ========================================================= */
+
+    input[type="range"]::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+
+      border-radius: 50%;
+
+      /* MISMO AZUL QUE LA PARTE RECORRIDA */
+      background: #4CAF50;
+
+      border: none;
+
+      cursor: pointer;
     }
 
     #cur,
@@ -82,7 +168,10 @@
       margin-top: 12px;
     }
 
-    /* Estilos para el botón de imagen al final */
+    /* =========================================================
+       BOTÓN FINAL CON IMAGEN
+       ========================================================= */
+
     .contenedor-enlace-web {
       text-align: center;
       margin-top: 25px; 
@@ -96,8 +185,8 @@
     }
 
     .imagen-boton {
-      max-width: 260px; /* Ancho de la imagen en pantalla */
-      width: 100%;       /* Se ajusta en pantallas pequeñas */
+      max-width: 260px;
+      width: 100%;
       height: auto;
       display: block;
       margin: 0 auto;
@@ -105,14 +194,16 @@
     }
 
     .imagen-boton:hover {
-      transform: scale(1.05); /* Efecto al pasar el cursor */
+      transform: scale(1.05);
       cursor: pointer;
     }
   </style>
 </head>
+
 <body>
 
   <div class="wrap">
+
     <img src="portada.png" class="cover" alt="Portada">
     
     <audio id="a" src="audio.mp3"></audio>
@@ -128,25 +219,67 @@
     <!-- Contenedor para la lista de capítulos/secciones -->
     <div id="buttons"></div>
 
-    <!-- BOTÓN FINAL CON IMAGEN (NUEVO) -->
+    <!-- BOTÓN FINAL CON IMAGEN -->
     <div class="contenedor-enlace-web">
-      <!-- Cambia '#' por la dirección de la página destino -->
-      <a href="https://readmindbk.github.io/WEB/" class="enlace-imagen" target="_blank">
-        <!-- Cambia 'web.png' por la ruta de la imagen de tu botón -->
-        <img class="imagen-boton" src="web.png" alt="Sitio Web">
+
+      <a href="https://readmindbk.github.io/WEB/" 
+         class="enlace-imagen" 
+         target="_blank">
+
+        <img class="imagen-boton" 
+             src="web.png" 
+             alt="Sitio Web">
+
       </a>
+
     </div>
+
   </div>
 
+
   <script>
+
+    /* =========================================================
+       SECCIONES DEL AUDIO
+       ========================================================= */
+
     const sections = [
-      {t: 0, n: '1 Esfinge'}, {t: 30, n: '2 Anubis'}, {t: 47, n: '3 Mantícora'}, {t: 62, n: '4 Cerbero'}, {t: 80, n: '5 Fénix'},
-      {t: 97, n: '6 Medusa'}, {t: 114, n: '7 Hidra'}, {t: 131, n: '8 Minotauro'}, {t: 149, n: '9 Quimera'}, {t: 165, n: '10 Cíclope'},
-      {t: 184, n: '11 Dragón'}, {t: 203, n: '12 Hombre Lobo'}, {t: 221, n: '13 Vampiro'}, {t: 240, n: '14 Gárgola'}, {t: 260, n: '15 Fauno'},
-      {t: 276, n: '16 Jörmungandr'}, {t: 294, n: '17 Kraken'}, {t: 312, n: '18 Dullahan'}, {t: 332, n: '19 Banshee'}, {t: 351, n: '20 Selkie'},
-      {t: 369, n: '21 Tiamat'}, {t: 386, n: '22 Wendigo'}, {t: 405, n: '23 Yeti'}, {t: 421, n: '24 Kitsune'}, {t: 438, n: '25 Kappa'},
-      {t: 457, n: '26 Oni'}, {t: 477, n: '27 Chupacabras'}, {t: 500, n: '28 Garuda'}, {t: 517, n: '29 Basilisco'}, {t: 536, n: '30 Alicorno'}
+      {t: 14, n: '1 T-Rex'},
+      {t: 31, n: '2 Triceratops'},
+      {t: 51, n: '3 Velociraptor'},
+      {t: 69.5, n: '4 Huayangosaurio'},
+      {t: 87, n: '5 Paquicefalosaurio'},
+      {t: 107.5, n: '6 Pteranodon'},
+      {t: 126, n: '7 Anquilosaurio'},
+      {t: 143.5, n: '8 Deinocheirus'},
+      {t: 162, n: '9 Diplodocus'},
+      {t: 180.5, n: '10 Dimetrodon'},
+      {t: 201, n: '11 Parasaurolophus'},
+      {t: 218.5, n: '12 Ictiosaurio'},
+      {t: 237, n: '13 Psittacosaurus'},
+      {t: 252.5, n: '14 Pegomastax'},
+      {t: 270, n: '15 Dreadnoughtus'},
+      {t: 291, n: '16 Edmontosaurus'},
+      {t: 308, n: '17 Gallimimus'},
+      {t: 327, n: '18 Yi qi'},
+      {t: 345, n: '19 Carnotaurus'},
+      {t: 364, n: '20 Mononykus'},
+      {t: 380, n: '21 Corythosaurus'},
+      {t: 397.5, n: '22 Lystrosaurus'},
+      {t: 414, n: '23 Oviraptor'},
+      {t: 428.5, n: '24 Plesiosaurio'},
+      {t: 447, n: '25 Irritator'},
+      {t: 466, n: '26 Tanystropheus'},
+      {t: 485, n: '27 Dilofosaurio'},
+      {t: 504, n: '28 Amargasaurus'},
+      {t: 523.5, n: '29 Deinonychus'},
+      {t: 541.5, n: '30 Mosasaurio'}
     ];
+
+
+    /* =========================================================
+       ELEMENTOS HTML
+       ========================================================= */
 
     const a = document.getElementById('a');
     const b = document.getElementById('buttons');
@@ -155,30 +288,94 @@
     const c = document.getElementById('cur');
     const d = document.getElementById('dur');
 
-    // Crear botones de salto
+
+    /* =========================================================
+       CREAR BOTONES DE SALTO
+       ========================================================= */
+
     sections.forEach((s) => {
+
       const bt = document.createElement('button');
+
       bt.className = 'jump';
+
       bt.textContent = s.n;
+
       bt.onclick = () => {
         a.currentTime = s.t;
       };
+
       b.appendChild(bt);
+
     });
 
-    // Formatear tiempo
+
+    /* =========================================================
+       FORMATEAR TIEMPO
+       ========================================================= */
+
     function fmt(x) {
+
       if (isNaN(x)) return "0:00";
+
       const min = Math.floor(x / 60);
+
       const sec = Math.floor(x % 60);
+
       return `${min}:${String(sec).padStart(2, '0')}`;
+
     }
 
-    // Botón reproducir/pausa
+
+    /* =========================================================
+       ACTUALIZAR COLOR DE LA BARRA
+       ========================================================= */
+
+    function updateProgressBar() {
+
+      /*
+         Calculamos qué porcentaje del audio se reprodujo.
+      */
+
+      if (!a.duration || !isFinite(a.duration)) {
+        return;
+      }
+
+      const percentage = (a.currentTime / a.duration) * 100;
+
+
+      /*
+         Pintamos:
+
+         AZUL   = parte reproducida
+         GRIS   = parte restante
+      */
+
+      pr.style.background = `
+        linear-gradient(
+          to right,
+          #4CAF50 0%,
+          #4CAF50 ${percentage}%,
+          #e0e0e0 ${percentage}%,
+          #e0e0e0 100%
+        )
+      `;
+
+    }
+
+
+    /* =========================================================
+       BOTÓN REPRODUCIR / PAUSA
+       ========================================================= */
+
     p.onclick = () => {
+
       if (a.paused) {
+
         a.play();
+
         p.textContent = "⏸ Pausa";
+
         p.animate(
           [
             { transform: "scale(1.2)" },
@@ -187,45 +384,106 @@
           ],
           { duration: 250 }
         );
+
       } else {
+
         a.pause();
+
         p.textContent = "▶ Escuchar";
+
       }
+
     };
 
-    // Cuando el navegador conoce la duración del audio
+
+    /* =========================================================
+       CUANDO SE CONOCE LA DURACIÓN DEL AUDIO
+       ========================================================= */
+
     a.addEventListener("loadedmetadata", () => {
+
       pr.min = 0;
+
       pr.max = a.duration;
+
       pr.step = 0.01;
+
       pr.value = 0;
 
       c.textContent = fmt(0);
+
       d.textContent = fmt(a.duration);
+
+      /* Iniciar barra completamente gris */
+      updateProgressBar();
+
     });
 
-    // Actualizar barra y tiempo
+
+    /* =========================================================
+       ACTUALIZAR BARRA, TIEMPO Y CAPÍTULO ACTIVO
+       ========================================================= */
+
     a.addEventListener("timeupdate", () => {
+
+      /* Actualizar posición */
       pr.value = a.currentTime;
+
+      /* Actualizar tiempo */
       c.textContent = fmt(a.currentTime);
 
-      const activeIndex = sections.filter(s => a.currentTime >= s.t).length - 1;
+      /* ACTUALIZAR COLOR DE LA BARRA */
+      updateProgressBar();
+
+
+      /* Determinar capítulo activo */
+
+      const activeIndex =
+        sections.filter(s => a.currentTime >= s.t).length - 1;
+
 
       document.querySelectorAll(".jump").forEach((btn, i) => {
-        btn.classList.toggle("active", i === activeIndex);
+
+        btn.classList.toggle(
+          "active",
+          i === activeIndex
+        );
+
       });
+
     });
 
-    // Permitir mover la barra
+
+    /* =========================================================
+       PERMITIR MOVER LA BARRA MANUALMENTE
+       ========================================================= */
+
     pr.addEventListener("input", () => {
+
       a.currentTime = Number(pr.value);
+
+      /* Actualizar inmediatamente el color */
+      updateProgressBar();
+
     });
 
-    // Cuando termina el audio
+
+    /* =========================================================
+       CUANDO TERMINA EL AUDIO
+       ========================================================= */
+
     a.addEventListener("ended", () => {
+
       p.textContent = "▶ Escuchar";
+
       pr.value = pr.max;
+
+      /* Barra completamente azul */
+      updateProgressBar();
+
     });
+
   </script>
+
 </body>
 </html>
